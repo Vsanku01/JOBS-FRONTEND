@@ -10,6 +10,8 @@ import { useHistory } from "react-router-dom";
 import { Hidden } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 
+import { toast } from "react-toastify";
+
 const categories = [
   {
     value: "recruiter",
@@ -18,6 +20,8 @@ const categories = [
     value: "user",
   },
 ];
+
+toast.configure();
 
 const Home = (props) => {
   const [category, setCategory] = useState("");
@@ -30,17 +34,25 @@ const Home = (props) => {
 
   let history = useHistory();
 
+  // const notifySuccess = (message) => {
+  //   toast.success(message);
+  // };
+
+  // const notifyError = (message) => {
+  //   toast.error(message);
+  // };
+
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
 
   const signinButtonHandler = () => {
     if (!email || !password || !category) {
-      return alert("Please fill all the fields");
+      return toast.error("Please fill all the fields");
     }
     setNewUser(true);
     if (category === "user" && open === false) {
-      alert("Please provide the resume link for reference");
+      toast.info("Please provide the resume link for reference");
       setOpen(true);
     }
 
@@ -55,7 +67,7 @@ const Home = (props) => {
         };
         createNewUser(userData);
       } else if (resumeLink === "") {
-        alert("Please provide the resume link");
+        toast.error("Please provide the resume link");
       }
     }
 
@@ -70,7 +82,7 @@ const Home = (props) => {
   };
 
   const createNewUser = (userData) => {
-    fetch("http://localhost:5000/signup", {
+    fetch("https://jobs-backend-project.herokuapp.com/signup", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -99,7 +111,7 @@ const Home = (props) => {
 
   const loginButtonHandler = () => {
     if (!email || !password || !category) {
-      return alert("Please fill all the fields");
+      return toast.error("Please fill all the fields");
     }
     let userData = {
       email: email,
@@ -107,7 +119,7 @@ const Home = (props) => {
       category: category,
     };
 
-    fetch("http://localhost:5000/login", {
+    fetch("https://jobs-backend-project.herokuapp.com/login", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -115,9 +127,11 @@ const Home = (props) => {
       },
     }).then(async (res) => {
       let result = await res.json();
-      alert(result.message);
+      toast.success(result.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      });
       if (result.flag && result.category === "user") {
-        console.log("Entering Case-1");
         setSignedUser(email);
         props.history.push({
           pathname: "/jobs",

@@ -37,7 +37,7 @@ export default function ViewTable({ user }) {
 
   const getCandidates = () => {
     axios
-      .post("http://localhost:5000/view-candidates", {
+      .post("https://jobs-backend-project.herokuapp.com/view-candidates", {
         email: user,
       })
       .then((response) => {

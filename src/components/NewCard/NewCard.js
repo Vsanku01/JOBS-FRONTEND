@@ -15,6 +15,9 @@ import { useSizedIconButtonStyles } from "@mui-treasury/styles/iconButton/sized"
 import Modal from "@material-ui/core/Modal";
 
 import axios from "axios";
+import { toast } from "react-toastify";
+
+toast.configure();
 
 const StyledTooltip = withStyles({
   tooltip: {
@@ -110,15 +113,22 @@ export const ShowcaseCardDemo = React.memo(function ShowcaseCard({
   const styles = useStyles();
   const gap = { xs: 1, sm: 1.5, lg: 2 };
 
+  const notify = () => {
+    toast.success("Applied Successfully");
+  };
+
   const buttonHandler = () => {
     const applyData = {
       id: id,
       userEmail: user,
       recruiterEmail: email,
     };
-    axios.post("http://localhost:5000/applyjob", applyData).then((response) => {
-      alert(response.data.message);
-    });
+    axios
+      .post("https://jobs-backend-project.herokuapp.com/applyjob", applyData)
+      .then((response) => {
+        // alert(response.data.message);
+        notify();
+      });
   };
   return (
     <>

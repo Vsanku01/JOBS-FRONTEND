@@ -87,16 +87,18 @@ function JobForm(props) {
         company: companyName,
       };
       console.log(formData);
-      axios.post("http://localhost:5000/postjob", formData).then((response) => {
-        alert(response.data.message);
-        setName("");
-        setCompanyName("");
-        setType("");
-        setEmail("");
-        setLocation("");
-        setTitle("");
-        setDescription("");
-      });
+      axios
+        .post("https://jobs-backend-project.herokuapp.com/postjob", formData)
+        .then((response) => {
+          alert(response.data.message);
+          setName("");
+          setCompanyName("");
+          setType("");
+          setEmail("");
+          setLocation("");
+          setTitle("");
+          setDescription("");
+        });
     }
     console.log("Clicked button");
   };
