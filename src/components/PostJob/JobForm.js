@@ -204,7 +204,7 @@ function JobForm(props) {
             className={classes.button}
             onClick={(e) => buttonHandler(e)}
           >
-            PostJob <Icon>send</Icon>
+            Post Job
           </Button>
         </form>
       </Paper>
