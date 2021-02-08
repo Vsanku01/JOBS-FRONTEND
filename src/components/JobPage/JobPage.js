@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import JobCard from "../JobCard/JobCard";
 import NewCard from "../NewCard/NewCard";
+import Navbar from "./Navbar";
 
 import Loader from "react-loader-spinner";
 
@@ -32,8 +33,8 @@ export default function JobPage(props) {
   return (
     <div className="jobpage">
       <Loader
-        type="Grid"
-        color="#01697D"
+        type="Oval"
+        color="#4150B5"
         height={100}
         width={100}
         timeout={500000000}
@@ -47,6 +48,7 @@ export default function JobPage(props) {
           zIndex: "10",
         }}
       />
+      <Navbar />
       {jobsList.length > 0
         ? jobsList.map((job, index) => {
             // return <JobCard key={index} jobData={job} />;
@@ -54,7 +56,7 @@ export default function JobPage(props) {
               <NewCard key={index} jobData={job} user={props.location.state} />
             );
           })
-        : "No JOBS Available"}
+        : ""}
     </div>
   );
 }

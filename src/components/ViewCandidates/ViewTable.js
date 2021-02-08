@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 
 import axios from "axios";
+import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles({
   table: {
@@ -29,8 +30,10 @@ const rows = [
 
 export default function ViewTable({ user }) {
   const [candidatesList, setCandidatesList] = useState([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
+    setShow(true);
     setCandidatesList([]);
     getCandidates();
   }, []);
@@ -41,8 +44,8 @@ export default function ViewTable({ user }) {
         email: user,
       })
       .then((response) => {
-        console.log(response.data.message);
-        setCandidatesList([...candidatesList, ...response.data.message]);
+        setShow(false);
+        setCandidatesList([...response.data.message]);
       });
   };
 
@@ -50,6 +53,22 @@ export default function ViewTable({ user }) {
 
   return (
     <TableContainer component={Paper}>
+      <Loader
+        type="Oval"
+        color="#4150B5"
+        height={100}
+        width={100}
+        timeout={500000000}
+        visible={show ? true : false}
+        height="60px"
+        style={{
+          top: "50%",
+          left: "50%",
+          position: "absolute",
+          transform: "translate(-50%,-50%)",
+          zIndex: "10",
+        }}
+      />
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>

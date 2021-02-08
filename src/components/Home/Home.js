@@ -11,6 +11,9 @@ import { Hidden } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 
 import { toast } from "react-toastify";
+import Navbar from "../JobPage/Navbar";
+
+import Loader from "react-loader-spinner";
 
 const categories = [
   {
@@ -31,6 +34,7 @@ const Home = (props) => {
   const [open, setOpen] = useState(false);
   const [resumeLink, setResumeLink] = useState("");
   const [newUser, setNewUser] = useState(false);
+  const [show, setShow] = useState(false);
 
   let history = useHistory();
 
@@ -82,6 +86,9 @@ const Home = (props) => {
   };
 
   const createNewUser = (userData) => {
+    // Start Loader
+    setShow(true);
+
     fetch("https://jobs-backend-project.herokuapp.com/signup", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -91,7 +98,9 @@ const Home = (props) => {
     })
       .then((res) => res.json())
       .then((response) => {
-        alert(response.message);
+        // Stop Loader
+        setShow(false);
+        toast.success(response.message);
         if (response.flag && response.category === "user") {
           setSignedUser(email);
           props.history.push({
@@ -119,6 +128,9 @@ const Home = (props) => {
       category: category,
     };
 
+    // Start Loader
+    setShow(true);
+
     fetch("https://jobs-backend-project.herokuapp.com/login", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -127,6 +139,8 @@ const Home = (props) => {
       },
     }).then(async (res) => {
       let result = await res.json();
+      // Stop Loader
+      setShow(false);
       toast.success(result.message, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
@@ -149,6 +163,23 @@ const Home = (props) => {
 
   return (
     <div className="form">
+      <Loader
+        type="Oval"
+        color="#4150B5"
+        height={100}
+        width={100}
+        timeout={500000000}
+        visible={show ? true : false}
+        height="60px"
+        style={{
+          top: "50%",
+          left: "50%",
+          position: "absolute",
+          transform: "translate(-50%,-50%)",
+          zIndex: "10",
+        }}
+      />
+      <Navbar show={false} />
       <h1>Login/ Signup</h1>
       <form className="register-fields">
         <TextField

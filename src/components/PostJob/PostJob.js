@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,8 +15,9 @@ import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 
 import JobForm from "./JobForm";
 
@@ -61,6 +62,10 @@ function PostJob(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleOnClick = useCallback(() => {
+    history.replace("/");
+  }, [history]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -125,6 +130,10 @@ function PostJob(props) {
           <Typography variant="h6" noWrap>
             Post a new Job
           </Typography>
+          <div style={{ flexGrow: 1 }} />
+          <Button style={{ color: "white" }} onClick={handleOnClick}>
+            <Typography variant="body1">Logout</Typography>
+          </Button>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

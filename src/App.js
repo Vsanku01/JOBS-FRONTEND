@@ -6,6 +6,8 @@ import ViewCandidate from "./components/ViewCandidates/ViewCandidate";
 
 import "./App.css";
 
+import Test from "./components/Test";
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
           <Route path="/postjob" component={PostJob} exact />
           <Route path="/newjob" component={PostJob} exact />
           <Route path="/view" component={ViewCandidate} exact />
+          <Route path="/test" component={Test} exact />
         </Switch>
       </Router>
     </div>

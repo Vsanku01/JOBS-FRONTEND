@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -16,6 +16,11 @@ import Modal from "@material-ui/core/Modal";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+
+import PageviewIcon from "@material-ui/icons/Pageview";
+import MailIcon from "@material-ui/icons/Mail";
+
+import Loader from "react-loader-spinner";
 
 toast.configure();
 
@@ -51,10 +56,11 @@ const BasicProfile = (props) => {
   return (
     <Row {...props}>
       <Item>
-        <Avatar className={styles.avatar}>{char}</Avatar>
+        <Avatar className={styles.avatar}>
+          <MailIcon />
+        </Avatar>
       </Item>
       <Item position={"middle"} pl={{ sm: 0.5, lg: 0.5 }}>
-        {/* <Typography className={styles.overline}>CREATOR..</Typography> */}
         <Typography className={styles.name}>{props.email}</Typography>
       </Item>
     </Row>
@@ -109,15 +115,17 @@ export const ShowcaseCardDemo = React.memo(function ShowcaseCard({
   jobData,
   user,
 }) {
-  const { id, description, title, location, email } = jobData;
+  const { id, description, title, location, email, type } = jobData;
   const styles = useStyles();
   const gap = { xs: 1, sm: 1.5, lg: 2 };
+  const [show, setShow] = useState(false);
 
   const notify = () => {
     toast.success("Applied Successfully");
   };
 
   const buttonHandler = () => {
+    setShow(true);
     const applyData = {
       id: id,
       userEmail: user,
@@ -126,13 +134,35 @@ export const ShowcaseCardDemo = React.memo(function ShowcaseCard({
     axios
       .post("https://jobs-backend-project.herokuapp.com/applyjob", applyData)
       .then((response) => {
+        setShow(false);
         // alert(response.data.message);
         notify();
       });
   };
   return (
     <>
-      <Grid container spacing={4} justify={"center"}>
+      <Loader
+        type="Oval"
+        color="#4150B5"
+        height={100}
+        width={100}
+        timeout={500000000}
+        visible={show ? true : false}
+        height="60px"
+        style={{
+          top: "50%",
+          left: "50%",
+          position: "absolute",
+          transform: "translate(-50%,-50%)",
+          zIndex: "10",
+        }}
+      />
+      <Grid
+        container
+        spacing={4}
+        justify={"center"}
+        style={{ marginBottom: "10px" }}
+      >
         <Grid item xs={12} sm={8} lg={7}>
           <Row
             className={styles.card}
@@ -148,6 +178,7 @@ export const ShowcaseCardDemo = React.memo(function ShowcaseCard({
             </Item>
             <Column>
               <CardHeader title={title} location={location} />
+              <CardHeader location={type} />
               <BasicProfile position={"bottom"} email={email} />
               <Button variant="outlined" onClick={() => buttonHandler()}>
                 Apply
