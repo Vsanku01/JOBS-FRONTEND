@@ -6,6 +6,8 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import axios from "axios";
 
+import Loader from "react-loader-spinner";
+
 import "./styles.css";
 
 const categories = [
@@ -29,6 +31,7 @@ function JobForm(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [show, setShow] = useState(false);
 
   const handleChange = (event) => {
     setType(event.target.value);
@@ -76,6 +79,7 @@ function JobForm(props) {
     ) {
       return alert("Please fill all the fields");
     } else {
+      setShow(true);
       console.log(name, type, email, location, title, description, companyName);
       let formData = {
         name,
@@ -86,10 +90,10 @@ function JobForm(props) {
         description,
         company: companyName,
       };
-      console.log(formData);
       axios
         .post("https://jobs-backend-project.herokuapp.com/postjob", formData)
         .then((response) => {
+          setShow(false);
           alert(response.data.message);
           setName("");
           setCompanyName("");
@@ -107,6 +111,22 @@ function JobForm(props) {
 
   return (
     <div>
+      <Loader
+        type="Oval"
+        color="#4150B5"
+        height={100}
+        width={100}
+        timeout={500000000}
+        visible={show ? true : false}
+        height="60px"
+        style={{
+          top: "50%",
+          left: "50%",
+          position: "absolute",
+          transform: "translate(-50%,-50%)",
+          zIndex: "10",
+        }}
+      />
       <Paper className={classes.root}>
         <Typography variant="h5" component="h3">
           {props.formName}

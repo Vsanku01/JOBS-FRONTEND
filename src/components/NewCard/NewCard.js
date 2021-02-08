@@ -130,6 +130,7 @@ export const ShowcaseCardDemo = React.memo(function ShowcaseCard({
       id: id,
       userEmail: user,
       recruiterEmail: email,
+      title: title,
     };
     axios
       .post("https://jobs-backend-project.herokuapp.com/applyjob", applyData)

@@ -22,12 +22,6 @@ function createData(date, email, link) {
   return { date, email, link };
 }
 
-const rows = [
-  createData("2021-02-07", "user@gmail.com", "https://www.google.com "),
-  createData("2021-02-07", "user@gmail.com", "https://www.google.com "),
-  createData("2021-02-07", "user@gmail.com", "https://www.google.com "),
-];
-
 export default function ViewTable({ user }) {
   const [candidatesList, setCandidatesList] = useState([]);
   const [show, setShow] = useState(false);
@@ -45,6 +39,7 @@ export default function ViewTable({ user }) {
       })
       .then((response) => {
         setShow(false);
+        console.log(response.data.message);
         setCandidatesList([...response.data.message]);
       });
   };
@@ -73,6 +68,7 @@ export default function ViewTable({ user }) {
         <TableHead>
           <TableRow>
             <TableCell>Date Applied</TableCell>
+            <TableCell align="right">Position Applied</TableCell>
             <TableCell align="right">Candidate Email</TableCell>
             <TableCell align="right">Resume/Portfolio Link</TableCell>
           </TableRow>
@@ -83,6 +79,7 @@ export default function ViewTable({ user }) {
               <TableCell component="th" scope="row">
                 {row.dateApplied}
               </TableCell>
+              <TableCell align="right">{row.title}</TableCell>
               <TableCell align="right">{row.userEmail}</TableCell>
               <TableCell align="right">
                 <Link href={row.resume} target="_blank">
