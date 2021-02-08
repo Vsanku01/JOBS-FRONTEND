@@ -180,7 +180,7 @@ const Home = (props) => {
         }}
       />
       <Navbar show={false} />
-      <h1>Login/ Signup</h1>
+      <h1>Login / Signup</h1>
       <form className="register-fields">
         <TextField
           fullWidth
